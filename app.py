@@ -3,16 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 import boto3
 import json
 
+#credentials.py is ommitted in the repo for abvious reasons
+import credentials
 
 
- 
+
 # Creating Flask app
 app = Flask(__name__)
  
 # Creating SQLAlchemy instance
 db = SQLAlchemy()
 
-#Get Credentials from AWS secrets
+"""
+
+Get Credentials from AWS secrets - This is not feasible when working in the AWS learner lab --> the AWS credentials change regularly######
+But this works in a venv
 
 secret_id = 'arn:aws:secretsmanager:us-east-1:614015726753:secret:RDS-proxy-r0785469-u9oqtk'
 region_name = 'us-east-1'
@@ -25,6 +30,18 @@ secret_dict = json.loads(secret_string)
 
 user = secret_dict['username']
 pin = secret_dict['password']
+
+
+"""
+
+
+
+
+# for this assigment we use the credentials stored in the credentials.py
+
+user = credentials.username
+pin = credentials.password
+
 db_name = "flask_r0785469_crud"
 host = 'db-proxy-r0785469.proxy-cqqtuda2jyyk.us-east-1.rds.amazonaws.com'
 
@@ -56,20 +73,6 @@ jedi = "of the jedi"
 @app.route('/')
 @app.route('/index')
 def index():
-    # entries = [
-    #     {
-    #         'id' : 1,
-    #         'title': 'test title 1',
-    #         'description' : 'test desc 1',
-    #         'status' : True
-    #     },
-    #     {
-    #         'id': 2,
-    #         'title': 'test title 2',
-    #         'description': 'test desc 2',
-    #         'status': False
-    #     }
-    # ]
     entries = Entries.query.all()
     return render_template('index.html', entries=entries)
 
@@ -134,10 +137,6 @@ def turn(id):
         return redirect('/')
 
     return "of the jedi"
-
-# @app.errorhandler(Exception)
-# def error_page(e):
-#     return "of the jedi"
 
 
 
