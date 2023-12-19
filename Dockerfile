@@ -9,7 +9,7 @@ COPY . .
 WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8080
+EXPOSE 80
 CMD ["gunicorn","--config", "gunicorn_config.py", "app:app"]
 
 
