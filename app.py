@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import boto3
 import json
 
 #credentials.py is ommitted in the repo for abvious reasons
