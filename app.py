@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
+from dotenv import load_dotenv
+import os
 
-#credentials.py is ommitted in the repo for abvious reasons
-import credentials
+#load environment variabels defined in the .env file (omitted in gitrepo)
+
+load_dotenv()
 
 
 
@@ -15,8 +18,8 @@ db = SQLAlchemy()
 
 """
 
-Get Credentials from AWS secrets - This is not feasible when working in the AWS learner lab --> the AWS credentials change regularly######
-But this works in a venv
+Get Credentials from AWS secrets - This is not feasible when working in the AWS learner lab --> the AWS credentials change regularly
+
 
 secret_id = 'arn:aws:secretsmanager:us-east-1:614015726753:secret:RDS-proxy-r0785469-u9oqtk'
 region_name = 'us-east-1'
@@ -34,19 +37,8 @@ pin = secret_dict['password']
 """
 
 
-
-
-# for this assigment we use the credentials stored in the credentials.py
-
-user = credentials.username
-pin = credentials.password
-
-db_name = "flask_r0785469_crud"
-host = 'db-proxy-r0785469.proxy-cqqtuda2jyyk.us-east-1.rds.amazonaws.com'
-
-
 # Configuring database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{user}:{pin}@{host}/{db_name}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.environ['DB_USERNAME']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"
  
 # Disable modification tracking
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
